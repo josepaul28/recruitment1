@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\Exception\RequestException;
 
+define("CHARACTERS_PER_PAGE", 10);
+
 class CharactersController extends Controller
 {
     public function index(Request $request)
@@ -40,10 +42,19 @@ class CharactersController extends Controller
                 });
             }
 
+            $page = 0;
+            if (isset($request->page) && !empty($request->page) && is_numeric($request->page)) {
+                $page = intval($request->page) - 1;
+            }
+            $resultsByPages = array_chunk($results, CHARACTERS_PER_PAGE);
+            if (!isset($resultsByPages[$page])) {
+                die("TODO: no more pages, hide the nex button at the front");
+            }
             return view('characters', [
                 'data' => (object) [
-                    "results" => $results,
-                    "filter" => (isset($request->sort) && !empty($request->sort)) ? $request->sort : null
+                    "results" => $resultsByPages[$page],
+                    "filter" => (isset($request->sort) && !empty($request->sort)) ? $request->sort : null,
+                    "page" => $page + 1
                 ]
             ]);
 

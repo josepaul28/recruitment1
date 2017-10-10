@@ -8,7 +8,7 @@
                 Sort by:
                 <form action="" method="GET">
                     <select onchange="this.form.submit()" name="sort" class="custom-select" style="display: inline-block">
-                        <option selected>Select a filter</option>
+                        <option value="">Select a filter</option>
                         <option value="name" {{ !(!empty($data->filter) && $data->filter == 'name') ?: 'selected="selected"' }}>Name</option>
                         <option value="mass" {{ !(!empty($data->filter) && $data->filter == 'mass') ?: 'selected="selected"' }}>Mass</option>
                         <option value="height" {{ !(!empty($data->filter) && $data->filter == 'height') ?: 'selected="selected"' }}>Height</option>
@@ -36,8 +36,14 @@
                 @endforeach
                 </tbody>
             </table>
-        @else
 
+            @if($data->page > 1)
+                <a href="?page={{ $data->page - 1 }}" class="btn-lg btn-success">BACK</a>
+            @endif
+
+            <a href="?page={{ $data->page + 1 }}" class="btn-lg btn-success">NEXT</a>
+        @else
+            <p style="margin: 20px 0;text-align: center;">No results found</p>
         @endif
     </div>
 @endsection
