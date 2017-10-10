@@ -28,7 +28,7 @@ class CharactersController extends Controller
                 $url = $data->next;
                 $cont++;
                 sleep(2);
-            } while(!empty($data->next) && $cont < 1); //until 5 because we want 50
+            } while(!empty($data->next) && $cont < 5); //until 5 because we want 50
 
             //sort if needed
             if (isset($request->sort) && !empty($request->sort)) {
